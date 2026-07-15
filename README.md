@@ -7,7 +7,7 @@
 
 ## Problem Statement
 
-Enterprise IT operations teams at companies monitor thousands of servers
+Production IT operations teams at companies monitor thousands of servers
 and services round the clock. Most monitoring solutions are **reactive** — they alert when a metric
 crosses a fixed threshold, after the incident has already begun. This project builds a **proactive**
 anomaly detection system that learns what *normal* infrastructure behavior looks like (using PCA and

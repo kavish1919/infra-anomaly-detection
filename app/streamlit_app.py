@@ -1,6 +1,6 @@
 """
 AIOps Infrastructure Log Anomaly Detection — Streamlit Triage Dashboard
-Designed for proactive enterprise infrastructure monitoring and SRE incident investigation.
+Designed for proactive production infrastructure monitoring and SRE incident investigation.
 """
 
 import os
@@ -152,8 +152,8 @@ if selected_service != "All Services":
 # TAB 1: FLEET HEALTH & KPI CENTER
 # ─────────────────────────────────────────────────────────────────────────────
 if nav_choice == "Fleet Health & KPI Center":
-    st.title("Enterprise Fleet Health & KPI Center")
-    st.markdown("Proactive, unsupervised anomaly detection running across **15 enterprise servers** over a **30-day time horizon**.")
+    st.title("Production Fleet Health & KPI Center")
+    st.markdown("Proactive, unsupervised anomaly detection running across **15 production servers** over a **30-day time horizon**.")
     
     # Top KPI Cards
     col1, col2, col3, col4 = st.columns(4)
