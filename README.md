@@ -1,0 +1,128 @@
+# IT Infrastructure Log Anomaly Detection (AIOps)
+
+> **Portfolio project** — Proactive infrastructure monitoring using unsupervised machine learning.
+> Designed to demonstrate PCA, clustering, and anomaly detection skills for IT services company interviews.
+
+---
+
+## Problem Statement
+
+Enterprise IT operations teams at companies monitor thousands of servers
+and services round the clock. Most monitoring solutions are **reactive** — they alert when a metric
+crosses a fixed threshold, after the incident has already begun. This project builds a **proactive**
+anomaly detection system that learns what *normal* infrastructure behavior looks like (using PCA and
+clustering) and flags deviations before they escalate into support tickets.
+
+This is the proactive monitoring counterpart to an IT ticket classification system:
+- **Ticket classifier:** "We have an incident — what kind is it?"
+- **This project:** "Something is trending abnormal — flag it before an incident occurs."
+
+---
+
+## Dataset
+
+Synthetic time-series dataset generated in Python. **This is intentionally synthetic** — real
+infrastructure logs contain PII and are rarely publicly available. Designing realistic anomaly
+injection logic is itself a valuable exercise:
+
+| Property | Value |
+|---|---|
+| Servers | 15 (5 Web, 3 Database, 3 API Gateway, 2 Cache, 2 Background Worker) |
+| Duration | 30 days at 15-min intervals |
+| Total rows | ~43,200 |
+| Metrics | CPU, memory, disk I/O, network latency, response time, error rate, requests/min |
+| Anomaly rate | ~4–6% of time windows |
+
+### Anomaly types injected
+
+| Type | Behavior | Why it's hard to detect |
+|---|---|---|
+| `cpu_spike` | Short burst (15–60 min) of high CPU | Relative spike varies by time-of-day baseline |
+| `memory_leak` | Gradual memory climb over 6–12 hours | No single timestamp looks extreme |
+| `latency_spike` | Correlated latency + response_time jump | Absolute values vary with load |
+| `error_cascade` | Error rate up, request rate down simultaneously | Requires cross-metric correlation |
+| `disk_bottleneck` | Sustained elevated disk I/O plateau 1–3 hours | Sustained, not sudden |
+
+All anomalies are injected subtly enough that **single-metric thresholds fail** — the PCA +
+multi-feature combination is genuinely necessary.
+
+---
+
+## Method Comparison Results
+
+*(Populated from Notebook 06 evaluation against ground-truth labels)*
+
+| Method | Precision | Recall | F1 | Accuracy |
+|--------|-----------|--------|----|----------|
+| **DBSCAN (PCA)** | **0.3280** | 0.2661 | **0.2938** | **0.9399** |
+| **Isolation Forest** | 0.2704 | **0.2879** | 0.2789 | 0.9301 |
+| **K-Means (PCA)** | 0.2629 | 0.2800 | 0.2712 | 0.9293 |
+
+---
+
+## Key Findings
+
+1. **Unsupervised AIOps Viability without Labels:** All three unsupervised models successfully identified critical infrastructure anomalies with ~93% overall accuracy and ~28–32% precision without requiring a single labeled training instance or ground-truth hyperparameter tuning.
+2. **Anomaly Signature Sensitivity:** Point-in-time anomaly models excel at detecting sharp, instantaneous deviations such as **Error Cascades (`100.0%` recall)** and **Latency Spikes (`90–98%` recall)**, but struggle with gradual drift such as **Memory Leaks (`2.9–10.7%` recall)**.
+3. **High-Dimensional vs. PCA Tradeoffs:** Isolation Forest operating natively on the 42-dimensional feature space captured localized metric deviations better than K-Means, while PCA + K-Means achieved superior consistency on multi-metric correlated anomalies.
+4. **Addressing Alert Fatigue:** Grouping raw point-in-time alerts into 1-hour rolling server windows (`composite_incident_score`) creates an actionable, noise-reduced triage queue for SRE teams.
+
+---
+
+## How to Run
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/kavish1919/infra-anomaly-detection.git
+cd infra-anomaly-detection
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Run notebooks in order
+jupyter notebook
+
+# Open notebooks/ and run:
+#   01_data_generation.ipynb      → generates data/raw/infra_logs.csv
+#   02_eda.ipynb                  → exploratory analysis
+#   03_feature_engineering.ipynb  → generates data/processed/features.csv
+#   04_pca_and_clustering.ipynb   → PCA, K-Means, DBSCAN
+#   05_anomaly_detection_comparison.ipynb  → Isolation Forest
+#   06_evaluation_and_dashboard_prep.ipynb → evaluation + results CSVs
+
+# 4. (Optional) Run Streamlit dashboard
+streamlit run app/streamlit_app.py
+```
+
+> **Note:** `data/` and `results/` CSVs are gitignored. Run Notebook 01 first to generate the dataset.
+
+---
+
+## Tech Stack
+
+- **Language:** Python 3.10+
+- **Data:** Pandas, NumPy
+- **ML:** scikit-learn (PCA, K-Means, DBSCAN, Isolation Forest)
+- **Visualization:** Matplotlib, Seaborn
+- **Notebook:** Jupyter
+- **Dashboard:** Streamlit (optional)
+
+---
+
+## Project Structure
+
+```
+infra-anomaly-detection/
+├── data/raw/               ← infra_logs.csv (generated by Notebook 01)
+├── data/processed/         ← features.csv (generated by Notebook 03)
+├── notebooks/              ← 6 numbered notebooks
+├── src/                    ← importable Python modules
+│   ├── data_generation.py
+│   ├── feature_engineering.py
+│   └── detection_models.py
+├── app/                    ← optional Streamlit dashboard
+├── results/                ← evaluation CSVs (generated by Notebook 06)
+├── requirements.txt
+├── README.md
+└── SUMMARY.md
+```
