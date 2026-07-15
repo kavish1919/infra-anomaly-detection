@@ -1,0 +1,4 @@
+Model,Accuracy,Precision,Recall,F1_Score,Flagged_Count
+K-Means (PCA),0.9293,0.2629,0.28,0.2712,2149
+DBSCAN (PCA),0.9399,0.328,0.2661,0.2938,1637
+Isolation Forest (Raw),0.9301,0.2704,0.2879,0.2789,2149

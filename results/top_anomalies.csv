@@ -1,0 +1,16 @@
+hour_window,server_id,service_type,total_logs,true_anomalies,kmeans_flags,dbscan_flags,iforest_flags,dominant_true_type,composite_incident_score
+2024-01-08 15:00:00,srv-api-02,API Gateway,4,2,4,4,4,latency_spike,12
+2024-01-08 16:00:00,srv-cache-02,Cache,4,0,4,4,4,none,12
+2024-01-08 21:00:00,srv-api-03,API Gateway,4,2,4,4,4,error_cascade,12
+2024-01-09 14:00:00,srv-web-04,Web Server,4,2,4,4,4,disk_bottleneck,12
+2024-01-08 21:00:00,srv-cache-02,Cache,4,2,4,4,4,error_cascade,12
+2024-01-07 04:00:00,srv-cache-01,Cache,4,2,4,4,4,error_cascade,12
+2024-01-02 18:00:00,srv-web-01,Web Server,4,3,4,4,4,error_cascade,12
+2024-01-05 20:00:00,srv-worker-02,Background Worker,4,0,4,4,4,none,12
+2024-01-04 07:00:00,srv-db-02,Database,4,4,4,4,4,error_cascade,12
+2024-01-09 00:00:00,srv-api-02,API Gateway,4,2,4,4,4,error_cascade,12
+2024-01-01 23:00:00,srv-worker-02,Background Worker,4,3,4,4,4,error_cascade,12
+2024-01-07 04:00:00,srv-db-01,Database,4,3,4,4,4,error_cascade,12
+2024-01-08 20:00:00,srv-cache-02,Cache,4,4,4,4,4,error_cascade,12
+2024-01-10 11:00:00,srv-api-01,API Gateway,4,0,4,4,4,none,12
+2024-01-02 20:00:00,srv-api-02,API Gateway,4,0,4,4,4,none,12

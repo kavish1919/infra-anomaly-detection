@@ -1,0 +1,7 @@
+Anomaly_Type,Injected_Count,K-Means (PCA)_Recall_Pct,DBSCAN (PCA)_Recall_Pct,Isolation Forest (Raw)_Recall_Pct
+cpu_spike,94,90.4,93.6,58.5
+disk_bottleneck,339,60.5,43.4,48.7
+error_cascade,171,100.0,100.0,90.6
+latency_spike,72,90.3,98.6,87.5
+memory_leak,1342,2.9,4.5,10.7
+none,40957,3.9,2.7,3.8
